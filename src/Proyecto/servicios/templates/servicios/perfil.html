@@ -1,0 +1,118 @@
+{% extends "servicios/index.html" %}
+
+{% block title %}Mi Perfil - Easy Office{% endblock %}
+
+{% block content %}
+<div class="space-y-6 max-w-5xl mx-auto">
+    <!-- Header de Perfil -->
+    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <div class="w-16 h-16 {% if es_trabajador %}bg-blue-100 text-blue-700{% else %}bg-emerald-100 text-emerald-700{% endif %} font-bold text-2xl rounded-full flex items-center justify-center">
+                {{ user.username|slice:":1"|upper }}
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-gray-900">{{ user.get_full_name|default:user.username }}</h1>
+                <p class="text-xs text-gray-500">
+                    {{ user.email }} • 
+                    {% if es_trabajador %}
+                        <span class="text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Panel Ejecutivo / Trabajador</span>
+                    {% else %}
+                        <span class="text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Cliente Activo</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <a href="{% url 'logout' %}" class="px-4 py-2 border border-red-200 text-red-600 hover:bg-red-50 text-xs rounded-lg font-medium transition">
+            <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+        </a>
+    </div>
+
+    {% if es_trabajador %}
+        <!-- ================= PANEL DEL TRABAJADOR ================= -->
+        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <i class="fa-solid fa-user-gear text-blue-600"></i> Gestión de Clientes y Contrataciones
+                </h2>
+                <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-semibold">Total Contratos: {{ contrataciones.count }}</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-gray-600">
+                    <thead class="bg-gray-50 text-gray-800 font-bold uppercase border-b">
+                        <tr>
+                            <th class="p-3">ID</th>
+                            <th class="p-3">Cliente</th>
+                            <th class="p-3">Plan</th>
+                            <th class="p-3">Monto</th>
+                            <th class="p-3">Estado</th>
+                            <th class="p-3">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        {% for c in contrataciones %}
+                            <tr class="hover:bg-gray-50">
+                                <td class="p-3 font-bold">#{{ c.id }}</td>
+                                <td class="p-3 font-semibold text-gray-900">{{ c.usuario.username }}</td>
+                                <td class="p-3">{{ c.plan.nombre }}</td>
+                                <td class="p-3 font-bold text-gray-900">${{ c.monto_pagado }}</td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 rounded text-[10px] font-bold 
+                                        {% if c.estado == 'ACTIVO' %}bg-emerald-100 text-emerald-800{% elif c.estado == 'PENDIENTE' %}bg-amber-100 text-amber-800{% else %}bg-red-100 text-red-800{% endif %}">
+                                        {{ c.estado }}
+                                    </span>
+                                </td>
+                                <td class="p-3 text-gray-400">{{ c.fecha_inicio|date:"d/m/Y H:i" }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="p-6 text-center text-gray-400">No hay contrataciones registradas todavía en el sistema.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    {% else %}
+        <!-- ================= PANEL DEL CLIENTE ================= -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <h2 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-file-contract text-emerald-600"></i> Mis Servicios Contratados
+                </h2>
+                
+                <div class="space-y-3">
+                    {% for c in contrataciones %}
+                        <div class="border rounded-lg p-3 bg-gray-50 text-xs space-y-1">
+                            <div class="flex justify-between font-bold">
+                                <span class="text-gray-900">{{ c.plan.nombre }}</span>
+                                <span class="text-emerald-600 font-semibold">{{ c.estado }}</span>
+                            </div>
+                            <p class="text-gray-500">Monto: ${{ c.monto_pagado }} CLP</p>
+                            <p class="text-gray-400 text-[10px]">Fecha: {{ c.fecha_inicio|date:"d/m/Y" }}</p>
+                        </div>
+                    {% empty %}
+                        <div class="text-center py-6 text-gray-400 text-xs border border-dashed rounded-lg">
+                            Aún no has contratado ningún servicio.
+                            <a href="{% url 'pasarela' %}" class="block mt-2 text-emerald-600 font-bold hover:underline">Ver Planes Disponibles →</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <h2 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-building text-emerald-600"></i> Datos de la Empresa
+                </h2>
+                <div class="text-xs space-y-2 text-gray-600">
+                    <p><strong class="text-gray-800">RUT Empresa:</strong> {{ user.perfilcliente.rut_empresa|default:"No registrado" }}</p>
+                    <p><strong class="text-gray-800">Razón Social:</strong> {{ user.perfilcliente.razon_social|default:"No registrada" }}</p>
+                    <p><strong class="text-gray-800">Teléfono:</strong> {{ user.perfilcliente.telefono|default:"No registrado" }}</p>
+                    <p><strong class="text-gray-800">Dirección:</strong> {{ user.perfilcliente.direccion|default:"Dirección Tributaria Providencia #1234" }}</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
