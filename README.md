@@ -33,17 +33,16 @@ El sistema cuenta con una arquitectura basada en el patrón MVT (Modelo-Vista-Te
 ##  Estructura del Repositorio
 
 ```text
-Capstone-Web/
-├── capstone_web/          # Configuración principal del proyecto Django (settings, urls, wsgi)
-├── servicios/             # Aplicación Django (modelos, vistas, formularios y URLs)
-│   ├── templates/         # Plantillas HTML (index, login, registro, perfil, pasarela, etc.)
-│   ├── static/            # Archivos estáticos (CSS, JS, imágenes)
-│   ├── models.py          # Modelos de Servicios, Reseñas, Transacciones
-│   ├── views.py           # Lógica de negocio y manejo de peticiones
-│   ├── forms.py           # Formularios de autenticación y reseñas
-│   └── urls.py            # Enrutamiento interno de la aplicación
-├── docs/                  # Documentación, diagramas ER y entregables del curso
-├── manage.py              # Script ejecutable para la gestión de Django
-├── db.sqlite3             # Base de datos local de desarrollo
-├── .gitignore             # Archivos excluidos del control de versiones
-└── README.md              # Presentación principal del repositorio
+Proyecto-Capstone/
+├── docs/                        # Documentación académica por fases
+│   ├── Fase 1/
+│   │   ├── Documentación Proyecto/
+│   │   └── Evidencias Angelo Sepulveda/
+│   ├── Fase 2/
+│   └── Fase 3/
+├── src/                         # CÓDIGO FUENTE DE LA APLICACIÓN WEB
+│   ├── capstone_web/            # Configuración principal (Django)
+│   ├── servicios/               # Aplicación / módulos principales
+│   └── manage.py                # Ejecutable principal
+├── .gitignore                   # Archivos que Git debe ignorar (archivos temporales, virtualenv, etc.)
+└── README.md                    # Presentación principal del repositorio
