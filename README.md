@@ -16,7 +16,7 @@ El sistema cuenta con una arquitectura basada en el patrón MVT (Modelo-Vista-Te
 
 ##  Integrantes del Equipo
 
-* **[Angelo Sepulveda Diaz]** -- [@usuario_github](https://github.com/jack1626)
+* **[Angelo Sepulveda Diaz]** -- [@jack1626](https://github.com/jack1626)
 * **[Nombre Integrante 2]** -- [@usuario_github](https://github.com/usuario)
 
 ---
