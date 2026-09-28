@@ -32,7 +32,7 @@ El sistema cuenta con una arquitectura basada en el patrón MVT (Modelo-Vista-Te
 
 ---
 
-## 🛠️ Requisitos e Instalación Local
+##  Requisitos e Instalación Local
 
 ### Prerrequisitos
 Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu equipo:
@@ -101,4 +101,5 @@ Proyecto-Capstone/
 │   ├── servicios/               # Aplicación / módulos principales
 │   └── manage.py                # Ejecutable principal
 ├── .gitignore                   # Archivos que Git debe ignorar (archivos temporales, virtualenv, etc.)
+├── Intrucciones                 # Instrucciones para ejecutar la apliacion
 └── README.md                    # Presentación principal del repositorio
