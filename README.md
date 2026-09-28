@@ -8,13 +8,15 @@
 
 ##  Descripción del Proyecto
 
-Capstone Web es una aplicación web desarrollada con Django diseñada para conectar usuarios con diversos servicios profesionales y técnicos. La plataforma permite a los visitantes explorar el catálogo de servicios disponibles, registrarse e iniciar sesión, contratar servicios a través de una pasarela integrada y dejar reseñas y calificaciones sobre las experiencias obtenidas. Su objetivo principal es facilitar la gestión y contratación de servicios en un entorno centralizado y seguro.
+Easy Office es una empresa que busca una aplicación web dinámica, escalable y segura. Por lo que de momento vamos a desarrollar un proyecto que automatiza el proceso de contratación y gestión de oficinas virtuales para emprendedores y empresas. En donde la plataforma permite a los usuarios explorar planes de servicios digitales (dirección tributaria, atención telefónica, uso de salas de reunión, entre otros), registrar sus empresas, realizar contrataciones en tiempo real y gestionar sus servicios activos desde un panel personalizado.
+
+El sistema cuenta con una arquitectura basada en el patrón MVT (Modelo-Vista-Template) y un esquema de control de acceso por roles diferenciados, brindando una experiencia adaptada tanto para los clientes finales como para el personal ejecutivo/administrativo.
 
 ---
 
 ##  Integrantes del Equipo
 
-* **[Angelo Sepulveda Diaz]** -- [@usuario_github](https://github.com/usuario)
+* **[Angelo Sepulveda Diaz]** -- [@usuario_github](https://github.com/jack1626)
 * **[Nombre Integrante 2]** -- [@usuario_github](https://github.com/usuario)
 
 ---
