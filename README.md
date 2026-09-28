@@ -30,6 +30,62 @@ El sistema cuenta con una arquitectura basada en el patrón MVT (Modelo-Vista-Te
 
 ---
 
+---
+
+## 🛠️ Requisitos e Instalación Local
+
+### Prerrequisitos
+Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu equipo:
+
+* **[Git](https://git-scm.com/downloads)**: Para la gestión de versiones y clonación del repositorio.
+* **[Python 3.x](https://www.python.org/downloads/)**: Intérprete del lenguaje (marcar la opción *"Add Python to PATH"* durante la instalación).
+* **[VS Code](https://code.visualstudio.com/)**: Editor de código recomendado.
+
+
+---
+
+## Requisitos e Instalación Local
+
+### Prerrequisitos
+Antes asegúrate de tener instalados los siguientes programas:
+
+* **[Git](https://git-scm.com/downloads)**: Para la gestión de versiones y clonación del repositorio.
+* **[Python 3.x](https://www.python.org/downloads/)**: Intérprete del lenguaje (marcar la opción *"Add Python to PATH"* durante la instalación).
+* **[VS Code](https://code.visualstudio.com/)**: Editor de código recomendado.
+
+---
+
+### Ejecución Local (CMD / Windows)
+
+Sigue esto en la consola de comandos de Windows (`cmd`) para desplegar y probar el proyecto en tu computadora (mac o linux tiene otra forma y ahora mismo no la se):
+
+1. **Clonar el repositorio:**
+
+   git clone [https://github.com/jack1626/Proyecto-Capstone-.git](https://github.com/jack1626/Proyecto-Capstone-.git)
+   cd Proyecto-Capstone-
+
+---
+
+2. **Crear y activar el entorno virtual:**
+
+   python -m venv venv
+   venv\Scripts\activate
+
+---
+
+3. **Instalar dependencias:**
+
+   pip install django
+
+---
+
+4. **Instalar dependencias:**
+
+   cd src
+   python manage.py migrate
+   python manage.py runserver
+
+---
 ##  Estructura del Repositorio
 
 ```text
