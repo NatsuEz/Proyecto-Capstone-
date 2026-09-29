@@ -4,21 +4,21 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
+from django.utils import timezone
 import json
 
 from .forms import RegistroClienteForm
-from .models import Plan, Contratacion, PerfilCliente
+from .models import Plan, Contratacion, Cliente
 
 def pasarela_view(request):
-    planes = Plan.objects.all().order_by('precio_mensual')
+    planes = Plan.objects.filter(activo=True).order_by('precio_mensual')
     return render(request, 'servicios/pasarela.html', {'planes': planes})
 
 def registro_view(request):
     if request.method == 'POST':
         form = RegistroClienteForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)  # Inicia sesión automáticamente tras el registro
+            cliente = form.save()
             return redirect('perfil')
     else:
         form = RegistroClienteForm()
@@ -51,8 +51,8 @@ def perfil_view(request):
     
     # Si el usuario es TRABAJADOR / EJECUTIVO (is_staff = True)
     if request.user.is_staff:
-        todas_contrataciones = Contratacion.objects.all().order_by('-fecha_inicio')
-        todos_clientes = PerfilCliente.objects.all()
+        todas_contrataciones = Contratacion.objects.all().order_by('-fecha_contratacion')
+        todos_clientes = Cliente.objects.all()
         
         context = {
             'es_trabajador': True,
@@ -60,8 +60,8 @@ def perfil_view(request):
             'clientes': todos_clientes,
         }
     else:
-        # Si es CLIENTE, solo trae sus contrataciones
-        mis_contrataciones = Contratacion.objects.filter(usuario=request.user).order_by('-fecha_inicio')
+        # Si es CLIENTE busca por su correo/RUT vinculado
+        mis_contrataciones = Contratacion.objects.filter(cliente__email=request.user.email).order_by('-fecha_contratacion')
         context = {
             'es_trabajador': False,
             'contrataciones': mis_contrataciones,
@@ -79,23 +79,30 @@ def procesar_pago_view(request):
     try:
         data = json.loads(request.body)
         plan_nombre = data.get('plan_nombre')
+        rut_cliente = data.get('rut_cliente')
         
         plan = Plan.objects.get(nombre=plan_nombre)
+        cliente = Cliente.objects.get(rut=rut_cliente)
         
         # Registrar la contratación en la Base de Datos
         contratacion = Contratacion.objects.create(
-            usuario=request.user,
+            cliente=cliente,
             plan=plan,
-            monto_pagado=plan.precio_mensual,
+            fecha_inicio=timezone.now().date(),
+            fecha_vencimiento=timezone.now().date() + timezone.timedelta(days=365),
+            monto_pagado=plan.precio_anual if plan.precio_anual > 0 else plan.precio_mensual,
             estado='ACTIVO'
         )
         
         return JsonResponse({
             'status': 'success',
             'mensaje': 'Contratación realizada exitosamente',
-            'contratacion_id': contratacion.id
+            'contratacion_id': contratacion.id,
+            'folio': contratacion.folio
         })
     except Plan.DoesNotExist:
-        return JsonResponse({'status': 'error', 'mensaje': 'El plan seleccionado no existe en el sistema.'}, status=400)
+        return JsonResponse({'status': 'error', 'mensaje': 'El plan seleccionado no existe.'}, status=400)
+    except Cliente.DoesNotExist:
+        return JsonResponse({'status': 'error', 'mensaje': 'El cliente especificado no está registrado.'}, status=400)
     except Exception as e:
         return JsonResponse({'status': 'error', 'mensaje': str(e)}, status=500)
